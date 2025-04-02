@@ -173,9 +173,17 @@ void HangmanGame(int game);
 
 int main()
 {
-    cout << "Hello, World!" << endl;
-    cout<<"1 2 3 4 5"<< endl;
-    ticTacToe();
+    cout << "Hello User! Welcome to the Mini-Game Terminal. Please choose which game you would like to play!" << endl;
+    int choice;
+    cin >> choice;
+
+    switch (choice) {
+        case(1):
+            cout << "Transporting you to the Tic Tac Toe Minigame..." << endl;
+            ticTacToe();
+        default:
+            cout << "DELETE LATER. More developing soon" << endl;
+            
     return 0;
 
 }
