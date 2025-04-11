@@ -178,6 +178,7 @@ void ticTacToe() {
 void HangmanGame();
 void display_hangman(int& man);
 bool guessing_word(char ptr_to_guess[], char ptr_to_word[], char ptr_to_already_guessed[], int size_of_word, int& man, int& tries);
+void playRockPaperScissors();
 
 int main()
 {
@@ -557,4 +558,38 @@ void display_hangman(int& man) //Outputs the Hanging man//
         cout << "    /     \\   |" << endl;
         cout << "           -------" << endl;
     }
+}
+void playRockPaperScissors() {
+    srand(static_cast<unsigned int>(time(0)));
+
+    string playerChoice;
+    string computerChoice;
+    string options[3] = {"rock", "paper", "scissors"};
+
+    cout << "\n=== Rock, Paper, Scissors ===\n";
+    cout << "Enter your choice (rock, paper, or scissors): ";
+    cin >> playerChoice;
+
+    for (char& c : playerChoice) c = tolower(c);
+
+    if (playerChoice != "rock" && playerChoice != "paper" && playerChoice != "scissors") {
+        cout << "Invalid input. Please type rock, paper, or scissors exactly.\n";
+        return;
+    }
+
+    computerChoice = options[rand() % 3];
+    cout << "Computer chose: " << computerChoice << endl;
+
+    if (playerChoice == computerChoice) {
+        cout << "It's a tie!\n";
+    } else if (
+        (playerChoice == "rock" && computerChoice == "scissors") ||
+        (playerChoice == "paper" && computerChoice == "rock") ||
+        (playerChoice == "scissors" && computerChoice == "paper")) {
+        cout << "You win!\n";
+    } else {
+        cout << "You lose!\n";
+    }
+
+    cout << "=============================\n\n";
 }
