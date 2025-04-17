@@ -4,6 +4,7 @@
 #include <string>
 #include <random>
 
+
 using namespace std;
 
 
@@ -173,7 +174,7 @@ void ticTacToe() {
     }
     cout << "\nThanks For Playing! ";
 }
-
+void Credits();
 
 void HangmanGame();
 void display_hangman(int& man);
@@ -182,15 +183,18 @@ void playRockPaperScissors();
 
 int main()
 {
-    cout << "Hello User! Welcome to the Mini-Game Terminal. Please choose which game you would like to play!" << endl;
+    cout << "Hello User! Welcome to the Mini-Game Terminal. Please choose which game you would like to play!\n0: Quit Program\n1: Tic Tac Toe (Requires two players)\n2: Hangman\n3: Rock Paper Scissors\n4: Credits" << endl;
     int choice;
     cin >> choice;
     cin.clear();
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    do
+
+    while (choice != 0)
     {
         switch (choice)
         {
+        case(0):
+            break;
         case(1):
             cout << "\nTransporting you to the Tic Tac Toe Minigame..." << endl;
             ticTacToe();
@@ -199,21 +203,33 @@ int main()
             cout << "\nTransporting you to the Hangman Minigame..." << endl;
             HangmanGame();
             break;
-        default:
-            cout << "\nThat's all! Thanks for Playing!" << endl;
+        case(3):
+            cout << "\nTransporting you to the Rock Paper Scissors Minigame..." << endl;
+            playRockPaperScissors();
+            break;
+        case(4):
+            Credits();
+            break;
         }
-
-        cout << "That was fun! What would you like to play next? (1 - 3): ";
+        cout << "\n\nWhat would you like to play? (1 - 4, 0 to quit): ";
         cin >> choice;
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    } while (choice != 0);
-    return 0;
+    }
 
+    return 0;
 }
 
-void HangmanGame() 
+void Credits()
+{
+    cout << "Main Menu created by Raiden Pelayo Bradley." << endl;
+    cout << "Hangman Game created by Raiden Pelayo Bradley." << endl;
+    cout << "Tic-Tac-Toe Minigame created by Harith" << endl;
+    cout << "Rock Paper Sciccors Minigam created by Justin Breis." << endl;
+}
+
+void HangmanGame()
 {
     cout << "\nWelcome to hangman user. Guess the word below and save the man" << endl;
     int tries = 0;
@@ -321,7 +337,7 @@ bool guessing_word(char ptr_to_guess[], char ptr_to_word[], char ptr_to_already_
             if (ptr_to_already_guessed[j] == guessed_letter)
             {
                 ptr_to_already_guessed[j] = guessed_letter;
-                cout << "This letter was already used. Try Again.";
+                cout << "This letter was already used. Try Again." << endl;
                 return false;
             }
         }
@@ -562,34 +578,42 @@ void display_hangman(int& man) //Outputs the Hanging man//
 void playRockPaperScissors() {
     srand(static_cast<unsigned int>(time(0)));
 
-    string playerChoice;
-    string computerChoice;
-    string options[3] = {"rock", "paper", "scissors"};
+    int wish_to_play = 1;
 
-    cout << "\n=== Rock, Paper, Scissors ===\n";
-    cout << "Enter your choice (rock, paper, or scissors): ";
-    cin >> playerChoice;
+    while (wish_to_play == 1)
+    {
+        string playerChoice;
+        string computerChoice;
+        string options[3] = { "rock", "paper", "scissors" };
 
-    for (char& c : playerChoice) c = tolower(c);
+        cout << "\n=== Rock, Paper, Scissors ===\n";
+        cout << "Enter your choice (rock, paper, or scissors): ";
+        cin >> playerChoice;
 
-    if (playerChoice != "rock" && playerChoice != "paper" && playerChoice != "scissors") {
-        cout << "Invalid input. Please type rock, paper, or scissors exactly.\n";
-        return;
+        for (char& c : playerChoice) c = tolower(c);
+
+        if (playerChoice != "rock" && playerChoice != "paper" && playerChoice != "scissors") {
+            cout << "Invalid input. Please type rock, paper, or scissors exactly.\n";
+            continue;
+        }
+
+        computerChoice = options[rand() % 3];
+        cout << "Computer chose: " << computerChoice << endl;
+
+        if (playerChoice == computerChoice) {
+            cout << "It's a tie!\n";
+        }
+        else if (
+            (playerChoice == "rock" && computerChoice == "scissors") ||
+            (playerChoice == "paper" && computerChoice == "rock") ||
+            (playerChoice == "scissors" && computerChoice == "paper")) {
+            cout << "You win!\n";
+        }
+        else {
+            cout << "You lose!\n";
+        }
+        
+        cout << "Do you want to try again? (1 for yes, 0 for no): ";
+        cin >> wish_to_play;
     }
-
-    computerChoice = options[rand() % 3];
-    cout << "Computer chose: " << computerChoice << endl;
-
-    if (playerChoice == computerChoice) {
-        cout << "It's a tie!\n";
-    } else if (
-        (playerChoice == "rock" && computerChoice == "scissors") ||
-        (playerChoice == "paper" && computerChoice == "rock") ||
-        (playerChoice == "scissors" && computerChoice == "paper")) {
-        cout << "You win!\n";
-    } else {
-        cout << "You lose!\n";
-    }
-
-    cout << "=============================\n\n";
 }
