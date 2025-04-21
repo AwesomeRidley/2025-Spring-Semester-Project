@@ -7,184 +7,24 @@
 
 using namespace std;
 
-
-void displayBoard(char board[][3])
-{
-    cout << "      1  2  3 \n";
-    for (int i = 0; i < 3;i++) {
-        cout << "Row:" << i + 1;
-        for (int ii = 0; ii < 3;ii++) {
-            cout << "|" << board[i][ii] << "|";
-        }
-        cout << "\n";
-    }
-}
-bool boardCheck(char board[][3], bool& go, int& winner) {
-    // test for horizontal wins
-    for (int i = 0; i < 3;i++) {
-        if (board[i][0] == 'X' && board[i][1] == 'X' && board[i][2] == 'X') {
-            winner = 1;
-            go = false;
-        }
-        else if (board[i][0] == 'O' && board[i][1] == 'O' && board[i][2] == 'O') {
-            winner = 2;
-            go = false;
-        }
-    }
-    // veritcal check
-    for (int i = 0; i < 3;i++) {
-        if (board[0][i] == 'X' && board[1][i] == 'X' && board[2][i] == 'X') {
-            winner = 1;
-            go = false;
-        }
-        else if (board[0][i] == 'O' && board[1][i] == 'O' && board[2][i] == 'O') {
-            winner = 2;
-            go = false;
-        }
-    }
-    //diagonal check
-
-    if (board[0][0] == 'X' && board[1][1] == 'X' && board[2][2] == 'X') {
-        winner = 1;
-        go = false;
-    }
-    else if (board[0][0] == 'O' && board[1][1] == 'O' && board[2][2] == 'O') {
-        winner = 2;
-        go = false;
-    }
-
-    if (board[2][0] == 'X' && board[1][1] == 'X' && board[0][2] == 'X') {
-        winner = 1;
-        go = false;
-    }
-    else if (board[2][0] == 'O' && board[1][1] == 'O' && board[0][2] == 'O') {
-        winner = 2;
-        go = false;
-    }
-
-    int count = 0;
-    if (winner == 0) {
-        for (int i = 0; i < 3;i++) {
-            for (int ii = 0; ii < 3;ii++) {
-                if (board[i][ii] == 'X' || board[i][ii] == 'O') {
-                    ++count;
-                    if (count == 9) {
-                        go = false;
-                        winner = 0;
-                    }
-                }
-            }
-        }
-    }
-
-    return go;
-}
-int int_check() {
-    string num;
-
-
-    while (true) {
-        getline(cin, num);
-
-        if (num.length() == 1 && isdigit(num[0])) {
-            int value = stoi(num);
-
-            if (value >= 1 && value <= 3) {
-                return value;
-            }
-        }
-
-        cout << "Error: Please enter a valid integer between 1 and 3.\n";
-        //Added this input stream cleaner I found online. Its said to help with a bug that makes the error message appear first.
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    }
-}
-bool place(char board[][3], int x, int y) {
-    bool check = false;
-    if (board[x][y] == ' ') {
-        check = true;
-    }
-    return check;
-}
-void ticTacToe() {
-    // make sure players cant place things in a area that already has a peice in it
-    int winner = 0;
-    char board[3][3];
-    for (int i = 0; i < 3;i++) {
-        for (int ii = 0; ii < 3;ii++) {
-            board[i][ii] = ' ';
-        }
-    }
-    displayBoard(board);
-    bool go = true;
-    while (go) {
-        int x, y;
-        while (true) {
-            cout << "\nPlayer 1: enter what row and column you want to place your X in\nRow(1-3): ";
-            x = int_check();
-            x--;
-            cout << "Col(1-3): ";
-            y = int_check();
-            y--;
-            if (place(board, x, y)) {
-                board[x][y] = 'X';
-                break;
-            }
-            else {
-                cout << "ERROR ALREADY TAKEN";
-                continue;
-            }
-        }
-
-        displayBoard(board);
-        boardCheck(board, go, winner);
-        if (!go) {
-            break;
-        }
-        while (true) {
-            cout << "\nPlayer 2: enter what row and column you want to place your O in\nRow(1-3): ";
-            x = int_check();
-            x--;
-            cout << "Col(1-3): ";
-            y = int_check();
-            y--;
-            if (place(board, x, y)) {
-                board[x][y] = 'O';
-                break;
-
-            }
-            else {
-                cout << "ERROR ALREADY TAKEN";
-                continue;
-            }
-        }
-        displayBoard(board);
-        boardCheck(board, go, winner);
-    }
-    if (winner == 1) {
-        cout << "PLAYER 1 WIN!";
-    }
-    else if (winner == 2) {
-        cout << "PLAYER 2 WIN!";
-
-    }
-    else {
-        cout << "TIE GAME!";
-    }
-    cout << "\nThanks For Playing! ";
-}
+//All prototypes//
+void displayBoard(char board[][3]);
+bool boardCheck(char board[][3], bool& go, int& winner);
+int int_check();
+bool place(char board[][3], int x, int y);
+void ticTacToe();
 void Credits();
-
 void HangmanGame();
 void display_hangman(int& man);
 bool guessing_word(char ptr_to_guess[], char ptr_to_word[], char ptr_to_already_guessed[], int size_of_word, int& man, int& tries);
 void playRockPaperScissors();
+void Credits();
 
 int main()
 {
     cout << "Hello User! Welcome to the Mini-Game Terminal. Please choose which game you would like to play!\n0: Quit Program\n1: Tic Tac Toe (Requires two players)\n2: Hangman\n3: Rock Paper Scissors\n4: Credits" << endl;
     int choice;
+    cout << "Enter your choice here: ";
     cin >> choice;
     cin.clear();
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -221,14 +61,16 @@ int main()
     return 0;
 }
 
+//Credits//
 void Credits()
 {
-    cout << "Main Menu created by Raiden Pelayo Bradley." << endl;
-    cout << "Hangman Game created by Raiden Pelayo Bradley." << endl;
-    cout << "Tic-Tac-Toe Minigame created by Harith" << endl;
-    cout << "Rock Paper Sciccors Minigam created by Justin Breis." << endl;
+    cout << endl << "Main Menu created by Raiden Pelayo Bradley." << endl;
+    cout << "Hangman Minigame created by Raiden Pelayo Bradley." << endl;
+    cout << "Tic-Tac-Toe Minigame created by Harith Dali Osmane" << endl;
+    cout << "Rock Paper Sciccors Minigame created by Justin Breis." << endl;
 }
 
+//Hangman Functions//
 void HangmanGame()
 {
     cout << "\nWelcome to hangman user. Guess the word below and save the man" << endl;
@@ -302,12 +144,11 @@ void HangmanGame()
         delete[] ptr_to_guess;
         delete[] ptr_to_already_guessed;
 
-        cout << endl << endl << "Would you like to try again? (Enter 1 or 0): ";
+        cout << endl << endl << "Would you like to try again? (Enter 1 for yes, 0 for no): ";
         cin >> wish_to_play;
 
     } while (wish_to_play);
 }
-
 bool guessing_word(char ptr_to_guess[], char ptr_to_word[], char ptr_to_already_guessed[], int size_of_word, int& man, int& tries) //This function will display what letters have been guessed correctly yet and what remains unknown.
 {
     display_hangman(man); //Displays the man hanging//
@@ -379,7 +220,6 @@ bool guessing_word(char ptr_to_guess[], char ptr_to_word[], char ptr_to_already_
     }
     return false;
 }
-
 void display_hangman(int& man) //Outputs the Hanging man//
 {
     if (man == 0)
@@ -575,6 +415,8 @@ void display_hangman(int& man) //Outputs the Hanging man//
         cout << "           -------" << endl;
     }
 }
+
+//Rock Paper Scissors Functions//
 void playRockPaperScissors() {
     srand(static_cast<unsigned int>(time(0)));
 
@@ -616,4 +458,172 @@ void playRockPaperScissors() {
         cout << "Do you want to try again? (1 for yes, 0 for no): ";
         cin >> wish_to_play;
     }
+}
+
+//TicTacToe Functions/
+void displayBoard(char board[][3])
+{
+    cout << "      1  2  3 \n";
+    for (int i = 0; i < 3;i++) {
+        cout << "Row:" << i + 1;
+        for (int ii = 0; ii < 3;ii++) {
+            cout << "|" << board[i][ii] << "|";
+        }
+        cout << "\n";
+    }
+}
+bool boardCheck(char board[][3], bool& go, int& winner) {
+    // test for horizontal wins
+    for (int i = 0; i < 3;i++) {
+        if (board[i][0] == 'X' && board[i][1] == 'X' && board[i][2] == 'X') {
+            winner = 1;
+            go = false;
+        }
+        else if (board[i][0] == 'O' && board[i][1] == 'O' && board[i][2] == 'O') {
+            winner = 2;
+            go = false;
+        }
+    }
+    // veritcal check
+    for (int i = 0; i < 3;i++) {
+        if (board[0][i] == 'X' && board[1][i] == 'X' && board[2][i] == 'X') {
+            winner = 1;
+            go = false;
+        }
+        else if (board[0][i] == 'O' && board[1][i] == 'O' && board[2][i] == 'O') {
+            winner = 2;
+            go = false;
+        }
+    }
+    //diagonal check
+
+    if (board[0][0] == 'X' && board[1][1] == 'X' && board[2][2] == 'X') {
+        winner = 1;
+        go = false;
+    }
+    else if (board[0][0] == 'O' && board[1][1] == 'O' && board[2][2] == 'O') {
+        winner = 2;
+        go = false;
+    }
+
+    if (board[2][0] == 'X' && board[1][1] == 'X' && board[0][2] == 'X') {
+        winner = 1;
+        go = false;
+    }
+    else if (board[2][0] == 'O' && board[1][1] == 'O' && board[0][2] == 'O') {
+        winner = 2;
+        go = false;
+    }
+
+    int count = 0;
+    if (winner == 0) {
+        for (int i = 0; i < 3;i++) {
+            for (int ii = 0; ii < 3;ii++) {
+                if (board[i][ii] == 'X' || board[i][ii] == 'O') {
+                    ++count;
+                    if (count == 9) {
+                        go = false;
+                        winner = 0;
+                    }
+                }
+            }
+        }
+    }
+
+    return go;
+}
+int int_check() {
+    string num;
+
+
+    while (true) {
+        getline(cin, num);
+
+        if (num.length() == 1 && isdigit(num[0])) {
+            int value = stoi(num);
+
+            if (value >= 1 && value <= 3) {
+                return value;
+            }
+        }
+
+        cout << "Error: Please enter a valid integer between 1 and 3.\n";
+        //Added this input stream cleaner I found online. Its said to help with a bug that makes the error message appear first.
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+} //Mainly for Tic-Tac-Toe
+bool place(char board[][3], int x, int y) {
+    bool check = false;
+    if (board[x][y] == ' ') {
+        check = true;
+    }
+    return check;
+}
+void ticTacToe() {
+    // make sure players cant place things in a area that already has a peice in it
+    int winner = 0;
+    char board[3][3];
+    for (int i = 0; i < 3;i++) {
+        for (int ii = 0; ii < 3;ii++) {
+            board[i][ii] = ' ';
+        }
+    }
+    displayBoard(board);
+    bool go = true;
+    while (go) {
+        int x, y;
+        while (true) {
+            cout << "\nPlayer 1: enter what row and column you want to place your X in\nRow(1-3): ";
+            x = int_check();
+            x--;
+            cout << "Col(1-3): ";
+            y = int_check();
+            y--;
+            if (place(board, x, y)) {
+                board[x][y] = 'X';
+                break;
+            }
+            else {
+                cout << "ERROR ALREADY TAKEN";
+                continue;
+            }
+        }
+
+        displayBoard(board);
+        boardCheck(board, go, winner);
+        if (!go) {
+            break;
+        }
+        while (true) {
+            cout << "\nPlayer 2: enter what row and column you want to place your O in\nRow(1-3): ";
+            x = int_check();
+            x--;
+            cout << "Col(1-3): ";
+            y = int_check();
+            y--;
+            if (place(board, x, y)) {
+                board[x][y] = 'O';
+                break;
+
+            }
+            else {
+                cout << "ERROR ALREADY TAKEN";
+                continue;
+            }
+        }
+        displayBoard(board);
+        boardCheck(board, go, winner);
+    }
+    if (winner == 1) {
+        cout << "PLAYER 1 WIN!";
+    }
+    else if (winner == 2) {
+        cout << "PLAYER 2 WIN!";
+
+    }
+    else {
+        cout << "TIE GAME!";
+    }
+    cout << "\nThanks For Playing! ";
 }
